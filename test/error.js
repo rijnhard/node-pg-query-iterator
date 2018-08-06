@@ -1,22 +1,22 @@
 var assert = require('assert')
 var helper = require('./helper')
 
-var QueryStream = require('../')
+var QueryIterator = require('../')
 
 helper('error', function (client) {
-  it('receives error on stream', function (done) {
-    var stream = new QueryStream('SELECT * FROM asdf num', [])
-    var query = client.query(stream)
+  it('receives error on event emitter', function (done) {
+    const iterator = new QueryIterator('SELECT * FROM asdf num', [])
+    const query = client.query(iterator)
     query.on('error', function (err) {
       assert(err)
       assert.equal(err.code, '42P01')
       done()
-    }).on('data', function () {
-      // noop to kick of reading
     })
+
+    query.next() // noop to kick off reading
   })
 
-  it('continues to function after stream', function (done) {
+  it('continues to function after iterator', function (done) {
     client.query('SELECT NOW()', done)
   })
 })

@@ -1,6 +1,6 @@
-# pg-query-stream
+# pg-query-iterator
 
-[![Build Status](https://travis-ci.org/brianc/node-pg-query-stream.svg)](https://travis-ci.org/brianc/node-pg-query-stream)
+[![Build Status](https://travis-ci.org/rijnhard/node-pg-query-iterator.svg)](https://travis-ci.org/rijnhard/node-pg-query-iterator)
 
 Receive result rows from [pg](https://github.com/brianc/node-postgres) as a readable (object) stream.
 
@@ -43,26 +43,7 @@ _note: this module only works with the JavaScript client, and does not work with
 
 I'm very open to contribution!  Open a pull request with your code or idea and we'll talk about it.  If it's not way insane we'll merge it in too: isn't open source awesome?
 
-## license
 
-The MIT License (MIT)
+## Credits
 
-Copyright (c) 2013 Brian M. Carlson
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+- Brian M. Carlson for most of the node postgres ecosystem

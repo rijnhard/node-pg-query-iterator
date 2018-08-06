@@ -1,10 +1,10 @@
 'use strict'
-var Cursor = require('pg-cursor')
-var Readable = require('stream').Readable
+const Cursor = require('pg-cursor')
+const EventEmitter = require('events').EventEmitter
 
-class PgQueryStream extends Readable {
+class PgQueryIterator extends EventEmitter {
   constructor (text, values, options) {
-    super(Object.assign({ objectMode: true }, options))
+    super()
     this.cursor = new Cursor(text, values)
     this._reading = false
     this._closed = false
@@ -30,33 +30,53 @@ class PgQueryStream extends Readable {
     this.cursor.close(cb)
   }
 
-  _read (size) {
+  async * generator () {
     if (this._reading || this._closed) {
-      return false
+      throw new Error('Generator can only be consumed once per query')
     }
+
     this._reading = true
-    const readAmount = Math.max(size, this.batchSize)
-    this.cursor.read(readAmount, (err, rows) => {
-      if (this._closed) {
+
+    while (this._reading && !this._closed) {
+      let rows
+      try {
+        rows = await batchRead(this.cursor, this.batchSize)
+      } catch (err) {
+        this._closed = true
+        this._reading = false
+        this.emit('error', err)
         return
       }
-      if (err) {
-        return this.emit('error', err)
-      }
+
       // if we get a 0 length array we've read to the end of the cursor
       if (!rows.length) {
         this._closed = true
+        this._reading = false
         setImmediate(() => this.emit('close'))
-        return this.push(null)
+        return
       }
 
-      // push each row into the stream
-      this._reading = false
-      for (var i = 0; i < rows.length; i++) {
-        this.push(rows[i])
+      for (let i = 0; i < rows.length; i++) {
+        yield rows[i]
       }
-    })
+    }
+  }
+
+  async * [Symbol.iterator] () {
+    yield * this.generator()
   }
 }
 
-module.exports = PgQueryStream
+function batchRead(cursor, size) {
+  return new Promise((resolve, reject) => {
+    cursor.read(size, (err, rows) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(rows)
+      }
+    })
+  })
+}
+
+module.exports = PgQueryIterator
