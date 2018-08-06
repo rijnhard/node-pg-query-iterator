@@ -48,6 +48,8 @@
     "clean": "rm -rf ./dist/*",
     "prebuild": "npm run clean",
     "build": "babel index.js --out-dir dist/ --source-maps",
-    "test": "BABEL_ENV=testing mocha"
+    "test": "mocha",
+    "test:local": "PGUSER=postgres PGDATABASE=postgres PGPASSWORD=sosecureitsfunny BABEL_ENV=testing mocha",
+    "test:localenv": "docker-compose up"
   }
 }

@@ -1,2 +1,3 @@
+--require babel-register
 --no-exit
 --bail
