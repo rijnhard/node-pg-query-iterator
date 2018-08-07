@@ -7,13 +7,14 @@ helper('error', function (client) {
   it('receives error on event emitter', function (done) {
     const iterator = new QueryIterator('SELECT * FROM asdf num', [])
     const query = client.query(iterator)
+
     query.on('error', function (err) {
       assert(err)
       assert.equal(err.code, '42P01')
       done()
     })
 
-    query.next() // noop to kick off reading
+    query.generator().next() // noop to kick off reading
   })
 
   it('continues to function after iterator', function (done) {

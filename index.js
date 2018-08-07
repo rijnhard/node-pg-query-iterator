@@ -62,8 +62,8 @@ class PgQueryIterator extends EventEmitter {
     }
   }
 
-  async * [Symbol.iterator] () {
-    yield * this.generator()
+  * [Symbol.asyncIterator] () {
+    return this.generator()
   }
 }
 
