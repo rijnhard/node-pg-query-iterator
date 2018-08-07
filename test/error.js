@@ -1,7 +1,7 @@
-var assert = require('assert')
-var helper = require('./helper')
+const assert = require('assert')
+const helper = require('./helper')
 
-var QueryIterator = require('../')
+const QueryIterator = require('../')
 
 helper('error', function (client) {
   it('receives error on event emitter', function (done) {
